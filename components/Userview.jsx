@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { createProjectForUser, deleteProject } from './Project.jsx'
+import { createProject, deleteProject } from './Project.jsx'
 import ProjectView from './ProjectView.jsx'
 
 function formatDateIso(v) {
@@ -53,7 +53,7 @@ export default function UserView({
     if (!user || !name.trim()) return
     setSubmitting(true)
     try {
-      await createProjectForUser(
+      await createProject(
         user.user_id,
         name.trim(),
         description.trim() || null,

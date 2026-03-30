@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://task-management-backend-ndng.onrender.com'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'
 const baseUrl = `${API_BASE_URL}/projects`
 
 
@@ -45,11 +45,17 @@ export async function getProjectSprintbyID(id1,id2){
 
 
 
-export async function createProject(project_name, description, start_date, end_date){
-    const new_project = { project_name, description, start_date, end_date }
+export async function createProject(userId, project_name, description, start_date, end_date) {
+    const new_project = {
+        project_name,
+        description,
+        start_date,
+        end_date,
+        created_by_user_id: userId
+    }
+
     const response = await axios.post(baseUrl, new_project)
     return response.data
-
 }
 
 
@@ -58,15 +64,4 @@ export async function deleteProject(id){
     return response.data
 }
 
-/** Create project and add user as OWNER (for “new project for this user”). */
-export async function createProjectForUser(userId, project_name, description, start_date, end_date) {
-    const project = await createProject(project_name, description, start_date, end_date)
-    const memberUrl = `${API_BASE_URL}/projectmembers/projects/${project.project_id}/members`
-    await axios.post(memberUrl, {
-        user_id: userId,
-        project_role: 'OWNER',
-        invited_by_user_id: null,
-    })
-    return { ...project, project_role: 'OWNER' }
-}
 
