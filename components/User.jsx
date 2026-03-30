@@ -5,9 +5,9 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://task-manageme
 const baseUrl = `${API_BASE_URL}/users`
 
 export async function getUsers(){
-    // Added the cache-buster here!
-    const response = await axios.get(`${baseUrl}?t=${new Date().getTime()}`)
+    const response = await axios.get(baseUrl)
     return response.data
+   
 }
 export async function getUserbyID(id){
     const response = await axios.get(`${baseUrl}/${id}`)
@@ -15,8 +15,7 @@ export async function getUserbyID(id){
 }
 
 export async function getProjectbyUser(id){
-    // And added the cache-buster here!
-    const response = await axios.get(`${baseUrl}/${id}/projects?t=${new Date().getTime()}`)
+    const response = await axios.get(`${baseUrl}/${id}/projects`)
     return response.data
 }
 
